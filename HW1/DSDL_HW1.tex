@@ -7,6 +7,7 @@
 \usepackage{hyperref}
 \usepackage{multirow}
 \usepackage{tabularx}
+\usepackage{circuitikz}
 \usepackage[table]{xcolor}
 \usepackage[dvipsnames]{xcolor}
 \usepackage[thinc]{esdiff}
@@ -161,12 +162,99 @@ As required, we can only use the below properties:
     &= \left( A' + B + C' \right) \cdot \left( AB'D' + A'B + BD\right) \\
 \end{align*}
 
-\textcolor{red}{Ask is further derivation is needed.}
-
-
 \newpage
 
 \section*{4}
+
+\subsection*{(1)}
+
+The switching algebra expression is:
+
+\begin{align*}
+    &D \cdot \left\{\left[ (A' + B') \cdot C \right] + (A \cdot C') \right\} \\
+    =& D \cdot (A'C + B'C + AC') \\
+    =& A'CD + B'CD + AC'D \\
+\end{align*}
+
+\subsection*{(2)}
+
+\begin{center}
+    \begin{circuitikz}
+        % Define node positions
+        \draw (0,2) to[nos] node[above] {$A'$} (1,2);
+        \draw (1,2) to[nos] node[above] {$C$} (2,2);
+        \draw (2,2) to[nos] node[above] {$D$} (3,2);
+        \draw (3,2) to[short] (3.5,2);
+        
+        \draw (0,1) to[nos] node[above] {$B'$} (1,1);
+        \draw (1,1) to[nos] node[above] {$C$} (2,1);
+        \draw (2,1) to[nos] node[above] {$D$} (3,1);
+        \draw (3,1) to[short] (3.5,1);
+        
+        \draw (0,0) to[nos] node[above] {$A$} (1,0);
+        \draw (1,0) to[nos] node[above] {$C'$} (2,0);
+        \draw (2,0) to[nos] node[above] {$D$} (3,0);
+        \draw (3,0) to[short] (3.5,0);
+        
+        % Draw left / rightvertical connections (parallel connections)
+        \draw (0,2) -- (0,0);
+        \draw (3.5,2) -- (3.5,0);
+
+        % draw the short lines in the middle of left/rightmost side
+        \draw (-0.5,1) -- (0,1);
+        \draw (3.5,1) -- (4,1);
+    \end{circuitikz}
+\end{center}
+
+\subsection*{(3)}
+
+We can convert the original expression into SOP form:
+
+\begin{align*}
+    &A'CD + B'CD + AC'D \\
+    =& (A'C + B'C + AC') \cdot D \\
+    =& \left[(A' + B')\textcolor{Green}{C} + A\textcolor{Green}{C'}\right] \cdot D \\
+    =& (A' + B' + C') \cdot (A + C) \cdot D
+\end{align*}
+
+\begin{center}
+    \begin{circuitikz}
+        % Define node positions
+        % firt column (A' + B' + C')
+        \draw (0,2) to[nos] node[above] {$A'$} (1,2);
+        \draw (0,1) to[nos] node[above] {$B'$} (1,1);
+        \draw (0,0) to[nos] node[above] {$C'$} (1,0);
+        
+        % vertical line to connect the first column
+        % leftmost side
+        \draw (0,2) -- (0,0);
+        % rightmost side
+        \draw (1,2) -- (1,0);
+
+        % leftmost short line in the middle
+        \draw (-0.5,1) -- (0,1);
+
+        % connect the first column to the second column
+        \draw (1,1) -- (2,1);
+
+        % second column (A + C)
+        \draw (2,1.5) to[nos] node[above] {$A$} (3,1.5);
+        \draw (2,0.5) to[nos] node[above] {$C$} (3,0.5);
+        
+        % vertical line to connect the second column
+        % leftmost side
+        \draw (2,1.5) -- (2,0.5);
+        % rightmost side
+        \draw (3,1.5) -- (3,0.5);
+
+        % connect the second column to the third column
+        \draw (3,1) -- (3.5,1);
+
+        % third column (D)
+        \draw (3.5,1) to[nos] node[above] {$D$} (4.5,1);
+        
+    \end{circuitikz}
+\end{center}
 
 \newpage
 
