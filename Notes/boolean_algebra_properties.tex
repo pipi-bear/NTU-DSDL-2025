@@ -1,0 +1,284 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[]{amsthm} 
+\usepackage[]{amssymb} 
+\usepackage{amsmath}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usepackage{mathtools}
+\usepackage{tcolorbox}
+\usepackage[table]{xcolor}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[thinc]{esdiff}
+\newtheorem*{theorem}{Theorem}
+
+\title{Boolean Algebra Properties}
+\author{Lo Chun, Chou \\ R13922136}
+\date\today
+
+\begin{document}
+\setlength{\parindent}{0pt}
+\maketitle 
+
+\newtheorem*{exmp}{Example}
+
+\tcbset{
+    greenbox/.style={colback=SpringGreen!20, colframe=SpringGreen!80, sharp corners},
+    bluebox/.style={colback=SkyBlue!20, colframe=SkyBlue!80, sharp corners},
+    yellowbox/.style={colback=yellow!10, colframe=yellow!80, sharp corners}
+}
+
+\section*{2.4 Basic Theorems}
+
+\begin{tcolorbox}[greenbox, title=Idempotent Laws, coltitle=black]
+    {\begin{align*}
+        X + X &= X \\
+        X \cdot X &= X
+    \end{align*}
+    }
+\end{tcolorbox}
+
+\begin{tcolorbox}[greenbox, title=Involution Law, coltitle=black]
+    {\begin{align*}
+        (X')' &= X
+    \end{align*}
+    }
+\end{tcolorbox}
+
+\begin{tcolorbox}[greenbox, title=Laws of Complementarity, coltitle=black]
+    {\begin{align*}
+        X + X' &= 1 \\
+        X \cdot X' &= 0
+    \end{align*}
+    }
+\end{tcolorbox}
+
+\section*{2.5 Commutative, Associative, Distributive and DeMorgan's Laws}
+
+\begin{tcolorbox}[greenbox, title=Distributive Laws, coltitle=black]
+    {\begin{align*}
+        X(Y + Z) &= XY + XZ \\
+        X + YZ &= (X + Y)(X + Z)
+    \end{align*}
+    }
+\end{tcolorbox}
+
+\begin{exmp}
+    \begin{align*}
+        (\textcolor{Green}{A + B} + C')(\textcolor{Green}{A + B} + D)
+        = \textcolor{Green}{A + B} + C'D 
+    \end{align*} 
+\end{exmp}
+
+\begin{proof}
+    \begin{align*}
+        (\textcolor{Green}{X + Y})(X + Z) 
+        &= \textcolor{Green}{X}(X + Z) + \textcolor{Green}{Y}(X + Z) \\
+        &= XX + XZ + XY + YZ \\
+        &= X + XZ + XY + YZ \\
+        &= X \textcolor{orange}{\cdot 1} + XZ + XY + YZ \\
+        &= X(1 + Z + Y) + YZ \\
+        &= X \cdot 1 + YZ \\
+        &= X + YZ 
+    \end{align*}
+\end{proof}
+
+\begin{tcolorbox}[greenbox, title=DeMorgan's Laws, coltitle=black]
+    {\begin{align*}
+        (X + Y)' &= X' \cdot Y' \\
+        (X \cdot Y)' &= X' + Y'
+    \end{align*}
+    }
+\end{tcolorbox}
+
+\section*{2.6 Simplification Theorems}
+
+\begin{tcolorbox}[greenbox, title=Uniting, coltitle=black]
+    {
+    \begin{align*}
+        XY + XY' &= X \\
+        (X + Y)(X + Y') &= X
+    \end{align*}
+    }
+\end{tcolorbox}
+
+\begin{proof}
+    \begin{align*}
+        XY + XY' &= X(Y + Y') \\
+        &= X \cdot 1 \\
+        &= X
+    \end{align*}
+\end{proof}
+
+\begin{proof}
+    \begin{align*}
+        (X + Y)(X + Y') &= XX + XY' + XY + YY' \\
+        &= X + XY' + XY \\
+        &= X(1 + Y' + Y) \\
+        &= X \cdot 1 \\
+        &= X
+    \end{align*}
+\end{proof}
+
+\begin{tcolorbox}[greenbox, title=Absorption, coltitle=black]
+    {
+    \begin{align*}
+        X + XY &= X \\
+        X(X + Y) &= X
+    \end{align*}
+    }
+\end{tcolorbox}
+
+\begin{proof}
+    \begin{align*}
+        X(X + Y) &= (X \textcolor{orange}{+ \ 0})(X + Y) \qquad \text{(distributive)}\\
+        &= X + 0 \cdot Y \\
+        &= X
+    \end{align*}
+\end{proof}
+
+\begin{tcolorbox}[greenbox, title=Elimination, coltitle=black]
+    {
+    \begin{align*}
+        X + X'Y &= X + Y \\
+        X(X' + Y) &= XY
+    \end{align*}
+    }
+\end{tcolorbox}
+
+\begin{proof}
+By distributive laws, we have $X + YZ = (X + Y)(X + Z)$
+\bigskip
+
+Thus,
+\begin{align*}
+    X + X'Y &= (X + X')(X + Y) \\
+    &= 1 \cdot (X + Y) \\
+    &= X + Y
+\end{align*}
+\end{proof}
+
+\begin{tcolorbox}[greenbox, title=Consensus, coltitle=black]
+    {
+    \begin{align*}
+        XY + X'Z + \textcolor{red}{YZ} &= XY + X'Z \\
+        (X + Y)(X' + Z)\textcolor{red}{(Y + Z)} &= (X + Y)(X' + Z)
+    \end{align*}
+    }
+\end{tcolorbox}
+
+\begin{proof}
+    \begin{align*}
+        XY + X'Z + YZ 
+        &= XY + X'Z + \textcolor{orange}{1} \cdot YZ \\
+        &= XY + X'Z + \textcolor{orange}{(X + X')}YZ \\
+        &= \textcolor{red}{XY} + X'Z + \textcolor{red}{XYZ}+ X'YZ \qquad \text{(absorption)}\\
+        &= XY + \textcolor{red}{X'Z + X'YZ} \qquad \text{(absorption)}\\
+        &= XY + X'Z
+    \end{align*}
+\end{proof}
+
+\section*{2.8 Complementing Boolean Expressions}
+
+\begin{tcolorbox}[greenbox]
+    {
+    \begin{align*}
+        (X_1 + X_2 + \cdots + X_n)' &= X_1' \cdot X_2' \cdots X_n' \\
+        (X_1 \cdot X_2 \cdots X_n)' &= X_1' + X_2' + \cdots + X_n'
+    \end{align*}
+    }
+\end{tcolorbox}
+
+\section*{3.2 Exclusive-OR and Equivalence Operations}
+
+\begin{tcolorbox}[greenbox, title=Exclusive-OR, coltitle=black]
+    {
+    \begin{align*}
+        X \oplus Y &= XY' + X'Y
+    \end{align*}
+    }
+\end{tcolorbox}
+
+Because $X$ exclusive-OR $Y$ is $1$ only when $X = 1$ and $Y = 0$ ($XY'$) or $X = 0$ and $Y = 1$ ($X'Y$).
+\bigskip
+
+Another way to think:
+
+$X$ exclusive-OR $Y$ is $1$ only when $X = 1$ or $Y = 1$, and $X, Y$ not both $1$, therefore:
+
+\begin{align*}
+    X \oplus Y 
+    &= (X + Y)(XY)' \\
+    &= (X + Y)(X' + Y') \\
+    &= XY' + X'Y
+\end{align*}
+
+\begin{tcolorbox}[greenbox, title=Properties of Exclusive-OR, coltitle=black]
+    {
+    \begin{align*}
+        &X \oplus 0 = X \\
+        &X \oplus 1 = X' \\
+        &X \oplus X     = 0 \\
+        &X \oplus X' = 1 \\
+        &X \oplus Y = Y \oplus X \ \text{(commutative)}\\
+        &X \oplus (Y \oplus Z) = (X \oplus Y) \oplus Z  = X \oplus Y \oplus Z \ \text{(associative)}\\
+        &X(Y \oplus Z) = XY \oplus XZ \ \text{(distributive)}\\
+        &\textcolor{orange}{(X \oplus Y)' = X \oplus Y'  = X' \oplus Y = XY + X'Y'}\\
+    \end{align*}
+    }
+\end{tcolorbox}
+
+\begin{proof}
+    \begin{align*}
+        (X \oplus Y)'
+        &= (XY' + X'Y)' \\
+        &= (XY')' \cdot (X'Y)' \\
+        &= (X' + Y)(X + Y') \\
+        &= X'Y' + XY 
+    \end{align*}
+\end{proof}
+
+\begin{tcolorbox}[greenbox, title=Equivalence Relation, coltitle=black]
+    {
+    \begin{align*}
+        &(X \equiv Y)  = 1 \iff X = Y \\
+        \Rightarrow \ & (X \equiv Y) = XY + X'Y'
+    \end{align*}
+    }
+\end{tcolorbox}
+
+Because $X \equiv Y$ is $1$ only when $X = Y = 1$ or $X = Y = 0$.
+\bigskip
+
+Therefore, combining the above equations, we have:
+
+\begin{tcolorbox}[yellowbox, title=Equivalence is the complement of exclusive-OR, coltitle=black]
+    {
+    \begin{align*}
+        (X \equiv Y) = XY + X'Y' = (X \oplus Y)'
+    \end{align*}
+    }
+\end{tcolorbox}
+
+Hence, \textcolor{orange}{the equivalence gate is also called the exclusive-NOR gate.}
+
+Also, note that:
+
+\begin{align*}
+    &X \oplus Y = XY' + X'Y \\
+    \Rightarrow \ & (X \oplus Y)' = \textcolor{Green}{(XY' + X'Y)'  = XY + X'Y'}
+\end{align*}
+
+This is useful, for example:
+
+\begin{align*}
+    A' \oplus B \oplus C
+    &= (A'B' + AB) \oplus C \\
+    &= \textcolor{orange}{(A'B' + AB)'}C + (A'B' + AB)C' \\
+    &= \textcolor{orange}{(A'B + AB')}C + (A'B' + AB)C' \\
+    &= A'BC + AB'C + A'B'C' + ABC'
+\end{align*}
+
+\end{document}

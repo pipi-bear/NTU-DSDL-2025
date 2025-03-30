@@ -1,0 +1,264 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[]{amsthm} 
+\usepackage[]{amssymb} 
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage[table]{xcolor}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[thinc]{esdiff}
+\newtheorem*{theorem}{Theorem}
+
+\title{Digital System Design and Lab: HW1}
+\author{Lo Chun, Chou \\ R13922136}
+\date\today
+
+\begin{document}
+\setlength{\parindent}{0pt}
+\maketitle 
+
+\section*{1}
+
+\begin{center}
+    \begin{tabular}{ |c|c|c||c|c| } 
+        \hline
+        \cline{1-5}
+        A & B & C & X & Y\\ 
+        \hline
+        0 & 0 & 0 & 0 & 0 \\ 
+        0 & 0 & 1 & 0 & 1 \\ 
+        0 & 1 & 0 & 0 & 1 \\ 
+        0 & 1 & 1 & 1 & 0 \\ 
+        1 & 0 & 0 & 0 & 1 \\
+        1 & 0 & 1 & 1 & 0 \\ 
+        1 & 1 & 0 & 1 & 0 \\ 
+        1 & 1 & 1 & 1 & 1 \\ 
+        \hline
+    \end{tabular}
+\end{center}
+
+From the values where $X=1$, we can form the following equation:
+
+\begin{align*}
+    X 
+    &= A'BC + AB'C + ABC' + ABC \\
+    &= m_3 + m_5 + m_6 + m_7 \\
+    &= \sum m(3, 5, 6, 7) \\
+    &= \prod M(0, 1, 2, 4)
+\end{align*}
+
+Similarly, from the values where $Y=1$, we can form the following equation:
+
+\begin{align*}
+    Y
+    &= A'B'C + A'BC' + AB'C' + ABC \\
+    &= m_1 + m_2 + m_4 + m_7 \\
+    &= \sum m(1, 2, 4, 7) \\
+    &= \prod M(0, 3, 5, 6)
+\end{align*}
+
+\section*{2}
+
+\subsection*{(1)}
+
+We form the table by first listing all possible combinations of $A, B, C, D$ and their corresponding decimal values.   
+\bigskip
+
+Then we calculate the decimal values multiplied by 5, 
+and let $S, T, U, V$ present the decimal values, and $W, X, Y, Z$ present the values of $0 \sim 9$ left.
+
+\begin{center}
+    \begin{tabular}{ |c|c|c|c||c|c||c|c|c|c||c|c|c|c| } 
+        \hline
+        \cline{1-5}\cline{6-9}\cline{10-14}
+        A & B & C & D & decimal & decimal $\times 5$ & S & T & U & V & W & X & Y & Z\\ 
+        \hline
+        0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+        0 & 0 & 0 & 1 & 1 & 5 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 1 \\ 
+        0 & 0 & 1 & 0 & 2 & 10 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\ 
+        0 & 0 & 1 & 1 & 3 & 15 & 0 & 0 & 0 & 1 & 0 & 1 & 0 & 1 \\ 
+        0 & 1 & 0 & 0 & 4 & 20 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\ 
+        0 & 1 & 0 & 1 & 5 & 25 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 1 \\ 
+        0 & 1 & 1 & 0 & 6 & 30 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 \\ 
+        0 & 1 & 1 & 1 & 7 & 35 & 0 & 0 & 1 & 1 & 0 & 1 & 0 & 1 \\ 
+        1 & 0 & 0 & 0 & 8 & 40 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\
+        1 & 0 & 0 & 1 & 9 & 45 & 0 & 1 & 0 & 0 & 0 & 1 & 0 & 1 \\ 
+        \hline
+    \end{tabular}
+\end{center}
+
+\subsection*{(2)}
+
+First, we can find that \textcolor{Green}{$D = X = Z$}, since when $D = 1$, this means that the decimal value is an odd number, 
+therefore the decimal value multiplied by $5$ would have a unit digit of $5$, which would result in a one in $X$ and $Z$.
+
+\bigskip
+
+Then, we can find that \textcolor{Green}{$C = V$}, since when $C = 1$, this means that the decimal value is added by $2$,
+therefore the decimal value multiplied by $5$ would result in adding a $10$, which is $V = 1$. Similarly, we would have \textcolor{Green}{$B = U$}.
+
+\bigskip
+
+Next, \textcolor{Green}{$A = T$}, because when $A = 1$, the decimal value is greater than $8$, 
+which would result in $40$ when multiplied by $5$, thus the tens digit would be $4$, which means $T = 1$.
+
+\bigskip
+
+We can observe that \textcolor{Green}{$S = 0$}, since in order to have a $1$ in $S$, the resulting value after multiplied by $5$ should be greater than $80$, 
+which is impossible, because the maximum value of a BCD digit $ABCD$ is $9$.
+
+\bigskip
+
+Finally, \textcolor{Green}{$W = Y = 0$}, since first, any value multiplied by $5$ would not result in $2$ or $8$ in the unit digit,
+also, the maximum value of $ABCD$ is $9$, so when we have $10$, it won't be $W = Y = 1$ but moving the ten to be presented in the tens digit. 
+\newpage
+
+\section*{3}    
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{HW2_3_KMap}
+\end{center}
+
+From the K-map, we can derive the following minimum SOP equation:
+
+\begin{align*}
+    F(A, B, C) = A'B' + C'
+\end{align*}
+\newpage
+
+\section*{4}
+
+\subsection*{(1)}
+
+First, we convert the maxterm expression into a minterm expression:
+
+\begin{align*}
+    F(A, B, C, D) 
+    &= \prod M(0, 2, 10, 11, 12, 14, 15) \cdot \prod D(5, 7) \\
+    &= \sum m(1, 3, 4, 6, 8, 9, 13) \cdot \sum d(5, 7)
+\end{align*}
+
+Next, we draw the K-map and find the minimum SOP equation:
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{HW2_4(1)_KMap}
+\end{center}
+
+From the K-map, we can derive the following minimum SOP equation:
+
+\begin{align*}
+    F(A, B, C, D) = A'B + C'D + A'D + AB'C'
+\end{align*}
+\newpage
+
+\subsection*{(2)}
+
+For this subproblem, we also need to convert the maxterm expression into a minterm expression first, which is the same as the previous subproblem:
+
+\begin{align*}
+    F(A, B, C, D) 
+    &= \prod M(0, 2, 10, 11, 12, 14, 15) \cdot \prod D(5, 7) \\
+    &= \sum m(1, 3, 4, 6, 8, 9, 13) \cdot \sum d(5, 7)
+\end{align*}
+
+But in the K-map, we circle $0$s instead of $1$s:
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{HW2_4(2)_KMap}
+\end{center}
+
+From the K-map, we can derive the following minimum SOP equation for $F'$:
+
+\begin{align*}
+    F'(A, B, C, D) = A'B'D' + ABD' + AC
+\end{align*}
+
+Then, we can derive the minimum POS equation for $F$ by using De Morgan's law:
+
+\begin{align*}
+    F(A, B, C, D) 
+    &= (F'(A, B, C, D))' \\
+    &= (A'B'D' + ABD' + AC)' \\
+    &= (A + B + D)(A' + B' + D)(A' + C')
+\end{align*}
+\newpage
+
+\section*{5}
+
+By the given restriction, we knew that $ABCD = 1111$ and $ABCD = 0101$ would never occur, so they are the don't care terms.
+\bigskip
+
+We then construct the K-map:
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{HW2_5_KMap}
+\end{center}
+
+From the K-map, we can derive the following simplified equation:
+
+\begin{align*}
+    F(A, B, C, D) = B'D' + A'D + C'D
+\end{align*}
+\newpage
+
+\section*{6}
+
+K-map using SOP (circle $1$s):
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{HW2_6_SOP_KMap}
+\end{center}
+
+From the order $1 \rightarrow 2 \rightarrow 3 \rightarrow 4$, we can formulate the first four minimum two-level gate circuits:
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{HW2_6_SOP_gate}
+\end{center}
+
+K-map using POS (circle $0$s):
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{HW2_6_POS_KMap}
+\end{center}
+
+From the order $5 \rightarrow 6 \rightarrow 7 \rightarrow 8$, we can formulate the first four minimum two-level gate circuits:
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{HW2_6_POS_gate}
+\end{center}
+
+Since we're using K-map to ensure that both SOP / POS expressions are minimum,
+we can conclude that the eight two-level gate circuits are minimum.
+
+\newpage
+
+\section*{7}
+
+First, we convert the maxterm expression into a minterm expression:
+
+\begin{align*}
+    F(A, B, C, D) 
+    &= \prod M(0, 1, 3, 13, 14, 15)  \\
+    &= \sum m(2, 4, 5, 6, 7, 8, 9, 10, 11, 12) 
+\end{align*}
+
+Then, we draw the K-map:
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{HW2_7_KMap}
+\end{center}
+
+From the K-map, we can formulate the curcuit with only AND, OR gates:
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{HW2_7_gate}
+\end{center}
+
+There are $5$ gates and $11$ gate inputs in the circuit.
+
+
+\end{document}
