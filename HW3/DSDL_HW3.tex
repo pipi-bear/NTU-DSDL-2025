@@ -43,12 +43,40 @@ So, we can use the two 4-to-1 MUXs and this setting to implement the 8-to-1 MUX 
 
 \section*{2}
 
-The derivation process and the resulting truth table are shown below:
+First, observe that part of the given circuit is a $\bar{S}-\bar{R}$ latch:
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.7\textwidth]{2_derivation_and_sol.jpeg}
+    \includegraphics[width=0.8\textwidth]{2_Sbar_Rbar_latch.jpeg}
 \end{figure}
+
+with the inputs:
+
+\begin{align*}
+    \bar{S} &= (AB)' = A' + B' \\
+    \bar{R} &= (AB')' = A' + B
+\end{align*}
+
+Thus, we can form the truth table of this latch by checking the values of $\bar{S}$, $\bar{R}$ and $Q$ in the table above:
+
+\begin{center}
+    \begin{tabular}{ |c|c||c|c|c||c| } 
+        \hline
+        \cline{1-6}
+        A & B & $\raisebox{-0.4ex}{$\bar{S}$}$ & $\raisebox{-0.4ex}{$\bar{R}$}$ & Q & $Q^+$ \\
+        \hline
+        0 & 0 & 1 & 1 & 0 & 0 \\
+        0 & 0 & 1 & 1 & 1 & 1 \\
+        0 & 1 & 1 & 1 & 0 & 0 \\
+        0 & 1 & 1 & 1 & 1 & 1 \\
+        1 & 0 & 1 & 0 & 0 & 0 \\
+        1 & 0 & 1 & 0 & 1 & 0 \\
+        1 & 1 & 0 & 1 & 0 & 1 \\
+        1 & 1 & 0 & 1 & 1 & 1 \\
+        \hline
+    \end{tabular}
+\end{center}
+
 
 
 \section*{3}
@@ -103,6 +131,59 @@ Which would give us the characteristic equation:
 \begin{align*}
     Q^+ = R + H \cdot Q
 \end{align*}
+
+\section*{4}
+
+\subsection*{(1)}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{4_1_clagl.png}
+\end{figure}
+
+\subsection*{(2)}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{4_2_rcagl.png}
+\end{figure}
+
+
+\section*{5}
+
+I use Surfer instead of GTKWave to present the waveform:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{5_waveform.png}
+\end{figure}
+
+\section*{6}
+
+We can find the maximum delay and one of the transition from the attached terminal output screenshots.
+
+\subsection*{(1)}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{6_(1).png}
+\end{figure}
+
+\subsection*{(2)}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{6_(2).png}
+\end{figure}
+
+\section*{7}
+
+
+
+
+
+
+
 
 
 
