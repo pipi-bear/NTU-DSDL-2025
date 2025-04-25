@@ -1,0 +1,109 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[]{amsthm} 
+\usepackage[]{amssymb} 
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\graphicspath{ {./solution_images/} }
+\usepackage{float}
+\usepackage[table]{xcolor}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[thinc]{esdiff}
+
+
+\title{Digital System Design and Lab: HW3}
+\author{Lo Chun, Chou \\ R13922136}
+\date\today
+
+\begin{document}
+\setlength{\parindent}{0pt}
+\maketitle 
+
+\section*{1}
+
+By lecture slide LEC-09 p.10-11, 
+we knew that using two three-state buffers with one inverter could do data selection, 
+and is equivalent to a 2-to-1 MUX:
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{1_three_state_buffer_w_inverter.jpeg}
+\end{figure}
+
+So, we can use the two 4-to-1 MUXs and this setting to implement the 8-to-1 MUX as follows:
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{1_sol.jpeg}
+\end{figure}
+
+\section*{2}
+
+The derivation process and the resulting truth table are shown below:
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{2_derivation_and_sol.jpeg}
+\end{figure}
+
+
+\section*{3}
+
+The following is the different cases of the latch:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{3_derivation.jpeg}
+\end{figure}
+
+\subsection*{(1)}
+
+From the above cases, we can see that when $R = 1$ and $H = 0$, $P = 1 \neq Q' = 0$.
+Therefore, we should not let:
+
+\begin{align*}
+    R = 1 \quad \text{and} \quad H = 0
+\end{align*}
+
+\subsection*{(2)}
+
+The next-state table is shown below:
+
+\begin{center}
+    \begin{tabular}{ |c|c|c||c| } 
+        \hline
+        \cline{1-4}
+        R & H & Q & Q+ \\ 
+        \hline
+        0 & 0 & 0 & 0 \\ 
+        0 & 0 & 1 & 0 \\ 
+        0 & 1 & 0 & 0 \\ 
+        0 & 1 & 1 & 1 \\ 
+        1 & 0 & 0 & X \\
+        1 & 0 & 1 & 1 \\ 
+        1 & 1 & 0 & X \\ 
+        1 & 1 & 1 & 1 \\ 
+        \hline
+    \end{tabular}
+\end{center}
+
+And we can construct the K-map as follows:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{3_kmap.jpeg}
+\end{figure}
+
+Which would give us the characteristic equation:
+
+\begin{align*}
+    Q^+ = R + H \cdot Q
+\end{align*}
+
+
+
+\end{document}
