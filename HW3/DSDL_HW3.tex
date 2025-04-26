@@ -178,13 +178,106 @@ We can find the maximum delay and one of the transition from the attached termin
 
 \section*{7}
 
+First, since we are assuming a $n$-bit carry lookahead, we must compute $C_1, \dots, C_n$.
+From the implementation details at p.33 in LAB-01.pdf, we can generalize the equation of $C_n$ as follows:
 
+\begin{align*}
+    C_1 &= 
+    \textcolor{Green}{G_0} + 
+    \textcolor{orange}{C_0} \cdot \textcolor{blue}{P_0} \\
+    C_2 &= 
+    \textcolor{Green}{G_1} + 
+    \textcolor{Green}{G_0} \cdot \textcolor{blue}{P_1} + 
+    \textcolor{orange}{C_0} \cdot \textcolor{blue}{P_0} \cdot \textcolor{blue}{P_1} \\
+    C_3 &= 
+    \textcolor{Green}{G_2} + 
+    \textcolor{Green}{G_1} \cdot \textcolor{blue}{P_2} + 
+    \textcolor{Green}{G_0} \cdot \textcolor{blue}{P_1} \cdot \textcolor{blue}{P_2} + 
+    \textcolor{orange}{C_0} \cdot \textcolor{blue}{P_0} \cdot \textcolor{blue}{P_1} \cdot \textcolor{blue}{P_2} \\
+    \vdots \\
+    C_n &= 
+    \underline{\textcolor{Green}{G_{n-1}}} + 
+    \underline{\textcolor{Green}{G_{n-2}} \cdot \textcolor{blue}{P_{n-1}}} + 
+    \cdots + 
+    \underline{\textcolor{Green}{G_0} \cdot \textcolor{blue}{P_1 \cdot \cdots \cdot P_{n-1}}} + 
+    \textcolor{orange}{C_0 \cdot \textcolor{blue}{P_0 \cdot \cdots \cdot P_{n-1}}}
+\end{align*}
 
+And $C_n$ can be rewritten as:
 
+\begin{align*}
+    C_n = 
+    \underline{\sum_{i=0}^{n-1} \left( \textcolor{Green}{G_i} \cdot \prod_{j=i+1}^{n-1} \textcolor{blue}{P_j} \right)} + 
+    \textcolor{orange}{C_0} \cdot \prod_{j=0}^{n-1} \textcolor{blue}{P_j}
+\end{align*}
 
+Observe the equation for $C_3$, we can see that since we are only allowed to use 2-input gates,
+for each term, we need:
 
+\begin{itemize}
+    \item $G_2$: \textcolor{red}{0} AND gate
+    \item $G_1 \cdot P_2$: \textcolor{red}{1} AND gate
+    \item $G_0 \cdot P_1 \cdot P_2$: \textcolor{red}{2} AND gates
+    \item $C_0 \cdot P_0 \cdot P_1 \cdot P_2$: \textcolor{red}{3} AND gates
+\end{itemize}
 
+And we need \textcolor{red}{3} OR gates to sum up all the terms.
+\bigskip
 
+Consider the structure of a more complicated example:
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{7_binary_tree_structure.jpeg}
+\end{figure}
+
+We can see that for $n = 8$, for the term that needs the most levels, it needs $4$ levels of AND gates, 
+and this happens at $C_0 \cdot \prod_{j=0}^{7} P_j$.
+\bigskip
+
+Generalizing this to the $n$-bit case, the maximal depth happens at $C_0 \cdot \prod_{j=0}^{n-1} P_j$,
+and this requires $\lceil \log_2(n+1) \rceil$ levels of AND gates.
+\bigskip
+
+The next step is to OR these resulting $n+1$ terms together, and this is again a binary tree structure,
+and the depth is also $\lceil \log_2(n+1) \rceil$, the process is similar and shown below:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{7_OR_tree.jpeg}
+\end{figure}
+
+Last, we did not count the process of generating $G_i, P_i$ as a level, so the total depth is:
+
+\begin{align*}
+    \lceil \log_2(n+1) \rceil + \lceil \log_2(n+1) \rceil + 1 = 2 \lceil \log_2(n+1) \rceil + 1
+\end{align*}
+
+But until now, we have not considered the sum, which has the equation:
+
+\begin{align*}
+    S_i = A_i \oplus B_i \oplus C_i
+\end{align*}
+
+Thus, for each bit, we need 2 XOR gates ($A_i \oplus B_i, \quad (A_i \oplus B_i) \oplus C_i$).
+Observe the following figure, we can see that we only need to compute $S_3$ by $C_3 \oplus P_3$,
+so we only need up to $C_{n-1}$:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{7_sum.jpg}
+\end{figure}
+
+Therefore, the sum depth is $C_{n-1}$ (which needs $2\lceil \log_2(n) \rceil + 1$ levels)
+plus the two XOR levels, which is $2\lceil \log_2(n) \rceil + 3$.
+\bigskip
+
+From the same above graph, the number of levels 
+would depend on whether $C_4$ or $S_3$ is having the maximal depth,
+and in our generalized case, it would be:
+
+\begin{align*}
+    \max \left\{ 2 \lceil \log_2(n+1) \rceil + 1, 2 \lceil \log_2(n) \rceil + 3 \right\} \qquad \square
+\end{align*}
 
 \end{document}
