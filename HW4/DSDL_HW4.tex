@@ -1,0 +1,229 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[]{amsthm} 
+\usepackage[]{amssymb} 
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\graphicspath{ {./solution_images/} }
+\usepackage{float}
+\usepackage{karnaugh-map}
+\usepackage{tikz}
+\usepackage{subcaption}
+\usepackage[table]{xcolor}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[thinc]{esdiff}
+
+
+\title{Digital System Design and Lab: HW4}
+\author{Lo Chun, Chou \\ R13922136}
+\date\today
+
+\begin{document}
+\setlength{\parindent}{0pt}
+\maketitle 
+
+\section*{1}
+\subsection*{(1)}
+
+\begin{table}[H]
+    \centering
+    \resizebox{0.4\textwidth}{!}{
+        \begin{tabular}{|c|c|c||c|c|c|}
+            \hline
+            \multicolumn{3}{|c||}{Present State} & \multicolumn{3}{c|}{Next State} \\
+            \hline
+            $C$ & $B$ & $A$ & $C^+$ & $B^+$ & $A^+$ \\
+            \hline
+            0 & 0 & 1 & 0 & 1 & 1 \\
+            0 & 1 & 1 & 0 & 1 & 0 \\
+            0 & 1 & 0 & 1 & 1 & 0 \\
+            1 & 1 & 0 & 1 & 1 & 1 \\
+            1 & 1 & 1 & 1 & 0 & 1 \\
+            1 & 0 & 1 & 1 & 0 & 0 \\
+            1 & 0 & 0 & 0 & 0 & 1 \\
+            \hline
+        \end{tabular}
+        }
+    \end{table}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.3\textwidth}
+        \centering
+        \begin{karnaugh-map}[2][4][1][$C$][$A$][$B$]
+            \terms{0}{X}
+            \minterms{3, 4, 5, 7}
+            \maxterms{1, 2, 6}
+        \end{karnaugh-map} 
+        \caption{$C^+$}
+    \end{subfigure}
+    \begin{subfigure}{0.3\textwidth}
+        \centering
+        \begin{karnaugh-map}[2][4][1][$C$][$A$][$B$]
+            \terms{0}{X}
+            \minterms{2, 4, 5, 6}
+            \maxterms{1, 3, 7}
+        \end{karnaugh-map} 
+        \caption{$B^+$}
+    \end{subfigure}
+    \begin{subfigure}{0.3\textwidth}
+        \centering
+        \begin{karnaugh-map}[2][4][1][$C$][$A$][$B$]
+            \terms{0}{X}
+            \minterms{1, 2, 5, 7}
+            \maxterms{3, 4, 6}
+        \end{karnaugh-map} 
+        \caption{$A^+$}
+    \end{subfigure}
+    \caption{K-maps}
+\end{figure}
+\newpage
+
+\subsection*{(2)}
+
+The K-maps for D flip-flop are the same as the K-maps for $C^+$, $B^+$, and $A^+$ in (1), 
+since we assign the values of $D_C$, $D_B$, and $D_A$ to be $C^+$, $B^+$, and $A^+$ respectively.
+\bigskip
+
+Thus, the following $D_C$ is the same as $C^+$:
+
+\begin{figure}[H]
+    \centering
+    \begin{karnaugh-map}[2][4][1][$C$][$A$][$B$]
+        \terms{0}{X}
+        \minterms{3, 4, 5, 7}
+        \maxterms{1, 2, 6}
+        \implicant{3}{7}
+        \implicant{4}{5}
+    \end{karnaugh-map} 
+    \caption{D flip-flop ($D_C$)}
+\end{figure}
+
+The minimum SOP expression for $D_C$ is:
+
+\begin{align*}
+    D_C = AC + A'B 
+\end{align*}
+\newpage
+
+\subsection*{(3)}
+
+Since $C$ is toggled for $CBA = \{010, 100\}$, we can derive the following K-map for $T_C$:
+
+\begin{figure}[H]
+    \centering
+    \begin{karnaugh-map}[2][4][1][$C$][$A$][$B$]
+        \terms{0}{X}
+        \minterms{1, 4}
+        \maxterms{2, 3, 5, 6, 7}
+        \implicant{0}{1}
+        \implicantedge{0}{0}{4}{4}
+    \end{karnaugh-map} 
+    \caption{T flip-flop ($T_C$)}
+\end{figure}
+
+The minimum SOP expression for $T_C$ is:
+
+\begin{align*}
+    T_C = A'B' + A'C'
+\end{align*}
+\newpage
+
+\subsection*{(4)}
+
+From the truth table is subproblem $(1)$, we have:
+
+\begin{align*}
+    \{B, B^+\} = 
+    \begin{cases}
+        \{0, 0\} & \text{for } CBA = \textcolor{blue}{\{101, 100\}} \rightarrow \{S, R\} = \textcolor{Green}{\{0, X\}} \\
+        \{0, 1\} & \text{for } CBA = \textcolor{blue}{\{001\}} \rightarrow \{S, R\} = \textcolor{Green}{\{1, 0\}} \\
+        \{1, 0\} & \text{for } CBA = \textcolor{blue}{\{111\}} \rightarrow \{S, R\} = \textcolor{Green}{\{0, 1\}} \\
+        \{1, 1\} & \text{for } CBA = \textcolor{blue}{\{011, 010, 110\}} \rightarrow \{S, R\} = \textcolor{Green}{\{X, 0\}}
+    \end{cases}
+\end{align*}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \begin{karnaugh-map}[2][4][1][$C$][$A$][$B$]
+            \terms{0, 4, 5, 6}{X}
+            \minterms{2}
+            \maxterms{1, 3, 7}
+            \implicant{0}{4}
+        \end{karnaugh-map} 
+        \caption{$S_B$}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \begin{karnaugh-map}[2][4][1][$C$][$A$][$B$]
+            \terms{0, 1, 3}{X}
+            \minterms{7}
+            \maxterms{2, 4, 5, 6}
+            \implicant{3}{7}
+        \end{karnaugh-map} 
+        \caption{$R_B$}
+    \end{subfigure}
+\end{figure}
+
+The minimum SOP expression for $S_B, R_B$ are:
+
+\begin{align*}
+    &S_B = C' \\
+    &R_B = AC
+\end{align*}
+\newpage
+
+\subsection*{(5)}
+
+From the truth table is subproblem $(1)$, we have:
+
+\begin{align*}
+    \{A, A^+\} = 
+    \begin{cases}
+        \{0, 0\} & \text{for } CBA = \textcolor{blue}{\{010\}} \rightarrow \{J, K\} = \textcolor{Green}{\{0, X\}} \\
+        \{0, 1\} & \text{for } CBA = \textcolor{blue}{\{110, 100\}} \rightarrow \{J, K\} = \textcolor{Green}{\{1, X\}} \\
+        \{1, 0\} & \text{for } CBA = \textcolor{blue}{\{011, 101\}} \rightarrow \{J, K\} =  \textcolor{Green}{\{X, 1\}} \\
+        \{1, 1\} & \text{for } CBA = \textcolor{blue}{\{001, 111\}} \rightarrow \{J, K\} = \textcolor{Green}{\{X, 0\}}
+    \end{cases}
+\end{align*}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \begin{karnaugh-map}[2][4][1][$C$][$A$][$B$]
+            \terms{0, 2, 3, 6, 7}{X}
+            \minterms{1, 5}
+            \maxterms{4}
+            \implicant{1}{5}
+        \end{karnaugh-map} 
+        \caption{$J_A$}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \begin{karnaugh-map}[2][4][1][$C$][$A$][$B$]
+            \terms{0, 1, 4, 5}{X}
+            \minterms{3, 6}
+            \maxterms{2, 7}
+            \implicant{1}{3}
+            \implicant{6}{4}
+        \end{karnaugh-map} 
+        \caption{$K_A$}
+    \end{subfigure}
+\end{figure}
+
+The minimum SOP expression for $J_A, K_A$ are:
+
+\begin{align*}
+    &J_A = C \\
+    &K_A = BC' + B'C
+\end{align*}
+\newpage
+
+\end{document}
