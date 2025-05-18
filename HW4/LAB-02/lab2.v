@@ -10,29 +10,29 @@ module mult_fast(
 		a_s0 <= A;
 		b_s0 <= B;
 	end
-	// stage 1
+	// stage 1: sum each two rows of partial products
 	wire[3:0] pp0 = a_s0 & {4{b_s0[0]}}; // ignore the delays of AND gates
 	wire[4:1] pp1 = a_s0 & {4{b_s0[1]}}; // ignore the delays of AND gates
 	wire[5:2] pp2 = a_s0 & {4{b_s0[2]}}; // ignore the delays of AND gates
 	wire[6:3] pp3 = a_s0 & {4{b_s0[3]}}; // ignore the delays of AND gates
 	reg[5:1] sum1;
 	always @(pp0, pp1)
-		sum1[5:1] <= #7 pp0[<index>] + pp1[<index>]; // delay of the 4-bit adder
+		sum1[5:1] <= #7 pp0[3:1] + pp1[4:1]; // delay of the 4-bit adder
 	reg[7:3] sum3;
 	always @(pp2, pp3)
-		sum3[7:3] <= #7 pp2[<index>] + pp3[<index>]; // delay of the 4-bit adder
+		sum3[7:3] <= #7 pp2[5:3] + pp3[6:3]; // delay of the 4-bit adder
 	reg[5:0] sum1_s1;
 	reg[7:2] sum3_s1;
 	always @(posedge clk) begin
-		sum1_s1 <= {sum1, pp0[<index>]};
-		sum3_s1 <= {sum3, pp2[<index>]};
+		sum1_s1 <= {sum1, pp0[0]};
+		sum3_s1 <= {sum3, pp2[2]};
 	end
 	// stage 2 (outout)
 	reg[7:2] sum2;
 	always @(sum1_s1, sum3_s1)
-		sum2[7:2] <= #8 sum1_s1[<index>] + sum3_s1[<index>]; // delay of the 6-bit adder
+		sum2[7:2] <= #8 sum1_s1[5:2] + sum3_s1[7:2]; // delay of the 6-bit adder
 	always @(posedge clk) begin
-		P <= {sum2, sum1_s1[<index>]};
+		P <= {sum2, sum1_s1[1:0]};
 	end
 endmodule
 
@@ -43,26 +43,27 @@ module mult_tb();
 		$dumpfile("lab2.vcd");
 		$dumpvars(0, mult_tb);
 	end
-	// clock cycle = 10 ticks
 	reg clock = 1;
 	always
-		#5 clock <= ~clock;
+		#4 clock <= ~clock;		// invert the clock every 4 ticks (so the clock cycle is 8 ticks)
 	// multiplier
 	reg[3:0] A, B;
 	wire[7:0] P;
 	reg[7:0] P_ref;
 	mult_fast mult(P, A, B, clock);
 	always @(posedge clock)
-		P_ref <= #20 A*B;
+		// Originally we have 20 ticks delay, and the clock cycle is 10 ticks, so we have 2 clock cycles delay
+		// After changing the clock cycle to 8 ticks, for 2 clock cycles delay, we can reduce to 16 ticks delay
+		P_ref <= #16 A*B;		
 	// loop through all possible inputs
 	integer i;
 	initial begin
-		#9;
+		#7;
 		for(i=0; i<256; i=i+1) begin
 			{A, B} <= i;
-			#10;
+			#8;		// After every one clock cycle, we can add a new input 
 		end
-		#21 $finish;
+		#17 $finish;
 	end
 	// check if the products are correct
 	reg[3:0] A_old, B_old;
@@ -74,7 +75,7 @@ module mult_tb();
 			$display("Product is wrong when A=%b, B=%b.", A_old, B_old);
 			$display("P_ref: %b.", P_ref);
 			$display("P    : %b.", P);
-			#9 $finish;
+			#7 $finish;
 		end
 	end
 endmodule
