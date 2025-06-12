@@ -44,7 +44,7 @@ So if you are using Mac and wanted to use GTKWave, maybe you should check if the
 
 Download Sufer at [this page](https://surfer-project.org), or in this page, there's a link to view waveform in the browser.
 
-## Detailed explanation for the code
+## Explanation for the code
 
 ### adders.v
 
